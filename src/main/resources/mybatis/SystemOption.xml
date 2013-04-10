@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?> <!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SystemOption">
+    <sql id="pageSql">
+        <if test="startIndex != null and pageSize != null">
+            limit #startIndex#, #pageSize#
+        </if>
+    </sql>
+
+    <insert id="com.unimedsci.pdms.systemoption.model.SystemOption.insert"
+            parameterType="com.unimedsci.pdms.systemoption.model.SystemOption">
+		INSERT INTO hf_system_option
+		(systemOptionId, cnName, enName, content, createdTimestamp,
+		creatorId, creatorName, lastModified, lastModifierId, lastModifierName)
+		VALUES
+		(#systemOptionId#, #cnName#, #enName#, #content#, #createdTimestamp#,
+		 #creatorId#, #creatorName#, #lastModified#, #lastModifierId#, #lastModifierName#)
+	</insert>
+
+    <select id="com.unimedsci.pdms.systemoption.model.SystemOption.selectSystemOptionByEnName"
+            parameterType="hashMap" resultType="com.unimedsci.pdms.systemoption.model.SystemOption">
+		SELECT systemOptionId, cnName, enName, content
+		FROM hf_system_option
+		WHERE enName = #enName#
+	</select>
+
+    <select id="com.unimedsci.pdms.systemoption.model.SystemOption.selectSystemOptions"
+            resultType="com.unimedsci.pdms.systemoption.model.SystemOption">
+		SELECT systemOptionId, cnName, enName, content
+		FROM hf_system_option
+	</select>
+
+    <update id="com.unimedsci.pdms.systemoption.model.SystemOption.updateSystemOption"
+            parameterType="hashMap">
+        UPDATE hf_system_option
+        <dynamic prepend="SET">
+            <isNotNull prepend="," property="content">
+                content = #content#
+            </isNotNull>
+            <isNotNull prepend="," property="lastModified">
+                lastModified = #lastModified#
+            </isNotNull>
+            <isNotNull prepend="," property="lastModifierId">
+                lastModifierId = #lastModifierId#
+            </isNotNull>
+            <isNotNull prepend="," property="lastModifierName">
+                lastModifierName = #lastModifierName#
+            </isNotNull>
+        </dynamic>
+        WHERE systemOptionId = #systemOptionId#
+    </update>
+</mapper>
+<sqlMap namespace="SystemOption">
+</sqlMap>
